@@ -1,4 +1,9 @@
+import json
+from pathlib import Path
+
 import pytest
+from faker import Faker
+
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
@@ -23,3 +28,20 @@ def cart_page(page):
 @pytest.fixture
 def checkout_page(page):
     return CheckoutPage(page)
+
+
+@pytest.fixture(scope="session")
+def users():
+    path = Path(__file__).parent / "data" / "users.json"
+    with open(path) as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def checkout_data():
+    fake = Faker()
+    return {
+        "first": fake.first_name(),
+        "last": fake.last_name(),
+        "zip": fake.postcode(),
+    }
