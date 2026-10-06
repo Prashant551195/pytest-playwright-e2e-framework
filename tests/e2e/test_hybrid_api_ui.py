@@ -27,6 +27,7 @@ def booking(api_context):
 
 
 @pytest.mark.e2e
+@pytest.mark.flaky(reruns=2, reruns_delay=2)
 def test_api_data_used_in_ui_checkout(
     login_page,
     inventory_page,

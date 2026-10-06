@@ -1,4 +1,6 @@
+import allure
 from playwright.sync_api import Page
+
 from config.settings import BASE_URL
 
 
@@ -10,9 +12,11 @@ class LoginPage:
         self.login_button = page.locator("#login-button")
         self.error = page.locator("[data-test='error']")
 
+    @allure.step("Open the login page")
     def open(self):
         self.page.goto(BASE_URL)
 
+    @allure.step("Log in as {user}")
     def login(self, user, pwd):
         self.username.fill(user)
         self.password.fill(pwd)
