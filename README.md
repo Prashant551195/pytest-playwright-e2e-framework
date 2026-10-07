@@ -72,8 +72,8 @@ pytest --headed --slowmo 500   # watch the browser
 ## Roadmap
 - [x] Framework setup and Page Object Model
 - [x] UI and E2E tests with test data
-- [ ] API tests (Restful-Booker) and hybrid UI + API tests
-- [ ] Allure reports, screenshots, traces, auto-created GitHub issues
+- [x] API tests (Restful-Booker) and hybrid UI + API tests
+- [x] Allure reports, screenshots, traces, auto-created GitHub issues
 - [ ] Cross-browser and parallel runs, Docker
 - [ ] CI/CD with GitHub Actions
 - [ ] Visual and accessibility checks
