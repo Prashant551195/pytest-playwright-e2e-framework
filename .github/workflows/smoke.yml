@@ -1,0 +1,33 @@
+name: Smoke tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      BASE_URL: https://www.saucedemo.com
+      SAUCE_USER: standard_user
+      SAUCE_PASSWORD: secret_sauce
+      API_BASE_URL: https://restful-booker.herokuapp.com
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: playwright install --with-deps chromium
+      - run: pytest -m smoke -n 2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-results
+          path: |
+            allure-results
+            test-results

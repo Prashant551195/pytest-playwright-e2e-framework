@@ -1,0 +1,36 @@
+name: Nightly regression
+
+on:
+  schedule:
+    - cron: "30 20 * * *"
+  workflow_dispatch:
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    env:
+      BASE_URL: https://www.saucedemo.com
+      SAUCE_USER: standard_user
+      SAUCE_PASSWORD: secret_sauce
+      API_BASE_URL: https://restful-booker.herokuapp.com
+      CREATE_GITHUB_ISSUES: "true"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: playwright install --with-deps
+      - run: pytest -n 4 -m "not visual" --browser chromium --browser firefox --browser webkit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regression-results
+          path: |
+            allure-results
+            test-results
